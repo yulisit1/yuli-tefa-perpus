@@ -29,6 +29,9 @@ import { installModule } from 'nuxt/kit';
                     </tbody>
                 </table>
             </div>
+            <Nuxt-Link to="/">
+              <button type="submit" class="btn btn-danger btn-lg rounded-5 px-5">KEMBALI</button>
+            </Nuxt-Link>
         </div>
     </div>
 </template>
