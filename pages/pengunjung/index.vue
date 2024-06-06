@@ -5,10 +5,10 @@ import { installModule } from 'nuxt/kit';
             <div class="col-lg-12">
                 <h2 class="text-center my-4">RIWAYAT KUNJUNGAN</h2>
                 <div class="my-3">
-                    <input type="search" class="form-control form-control-lg rounded-5" placeholder="Filter...">
+                    <input type="search" class="form-control rounded-5" placeholder="Fiter...">
                 </div>
-                <div class="my-3 text-muted">menampilkan 1 dari 1</div>
-                <table class="table">
+                 <div class="my-3 text-muted">menampilkan 1 dari 1</div>
+                 <table class="table">
                     <thead>
                         <tr>
                             <td>#</td>
@@ -19,19 +19,42 @@ import { installModule } from 'nuxt/kit';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1.</td>
-                            <td>yuli sthnfah</td>
-                            <td>murid</td>
-                            <td>24 Februari 2024, 23.31.00</td>
-                            <td>Baca</td>
+                        <tr v-for="(visitor,i) in visitors" :key="i">
+                            <td>{{ i+1 }}.</td>
+                            <td>{{ visitor.nama }}</td>
+                            <td>{{ visitor.keanggotaan.nama }}</td>
+                            <td>{{ visitor.tanggal }}, {{ visitor.waktu }}</td>
+                            <td>{{ visitor.keperluan.nama }}</td>
                         </tr>
                     </tbody>
-                </table>
+                 </table>
             </div>
-            <Nuxt-Link to="/">
-              <button type="submit" class="btn btn-danger btn-lg rounded-5 px-5">KEMBALI</button>
-            </Nuxt-Link>
         </div>
+        <nuxt-link to="/">
+        <button type="submit" class="btn btn-light btn-lg rounded-5 px-5">kembali</button></nuxt-link>
     </div>
 </template>
+<script setup>
+const supabase = useSupabaseClient()
+
+const visitors = ref([])
+
+const getPengunjung = async () => {
+    const { data, error } = await supabase.from('pengunjung').select(`*, keanggotaan(*), keperluan(*)`)
+    .order('id', { ascending: false })
+    if(data) visitors.value = data
+}
+
+onMounted(() => {
+    getPengunjung()
+})
+</script>
+
+<style scoped>
+.btn {
+    background-color: #D9D9D9;
+}
+.form-control{
+    background-color: #D9D9D9;
+}
+</style>
